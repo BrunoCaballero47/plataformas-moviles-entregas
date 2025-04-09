@@ -1,0 +1,40 @@
+body{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    margin: 80px;
+    background-color: rgb(50, 180, 57);
+}
+
+.Cont-principal{
+    width: 80%;
+    max-width: 60%;
+    border: 2px solid black;
+    height: 200px;
+    margin-left: 250px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+.cont-secu{
+    width: 1000px;
+    margin-left: 80px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cuadro{
+    border: 2px solid black;
+    width: 150px;
+    height: 50px;
+    background-color: bisque;
+    margin: 0 25px;
+}
