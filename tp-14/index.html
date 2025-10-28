@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Contactos - DOM y JavaScript</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container my-1 my-sm-2 my-md-4 my-lg-5">
+        <h1>Lista de Contactos</h1>
+        <div class="card">
+            <div class="card-body">
+                <h2>Contactos</h2>
+
+                <ul id="lista-contactos"></ul>
+
+                <hr class="hr">
+
+                <h2>Nuevo Contacto</h2>
+                <form id="form-producto">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="nombre" id="input-nombre" placeholder="Nombre" aria-label="Nombre">
+                        <input type="text" class="form-control" name="apellido" id="input-apellido" placeholder="Apellido" aria-label="Apellido">
+                         <input type="text" class="form-control" name="telefono" id="input-telefono" placeholder="telefono" aria-label="telefono">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Agregar Contacto</button>
+                     Ordenar por: <select>
+                        <option value="nombre">Nombre</option>
+                        <option value="apellido">Apellido</option>
+                        </select>                     <button class="btn btn-primary" type="button" onclick="ordenarAlfabeticamente()">Ordenar</button> 
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Mostrar sólo favoritos
+                        </label>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+let contactos = [
+    { nombre: 'Juan', apellido: 'Perez', telefono: '123456789', favorito: false },
+];
+
+// Mostrar listado inicial
+mostrarListado();
+
+function agregarContacto(nombre, apellido, telefono) {
+    contactos.push({ nombre, apellido, telefono, favorito: false });
+    mostrarListado();
+}
+
+function mostrarListado() {
+    const ul = document.querySelector('#lista-contactos');
+    ul.innerHTML = '';
+    const soloFavoritos = document.querySelector('#flexCheckDefault').checked;
+    const lista = soloFavoritos ? contactos.filter(c => c.favorito) : contactos;
+
+    lista.forEach((contacto, index) => {
+        const li = document.createElement('li');
+        li.classList.add('mb-2');
+        li.innerHTML = `
+            <strong>${contacto.nombre} ${contacto.apellido}</strong> - ${contacto.telefono} 
+            <button class="btn btn-sm btn-warning ms-2">${contacto.favorito ? '★' : '☆'}</button>
+        `;
+        li.querySelector('button').addEventListener('click', () => agregarFavorito(index));
+        ul.appendChild(li);
+    });
+}
+
+function agregarFavorito(index) {
+    contactos[index].favorito = !contactos[index].favorito;
+    mostrarListado();
+}
+
+function ordenarAlfabeticamente() {
+    const criterio = document.querySelector('select').value;
+    contactos.sort((a, b) => a[criterio].localeCompare(b[criterio]));
+    mostrarListado();
+}
+
+// Eventos
+document.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const nombre = document.querySelector('#input-nombre').value.trim();
+    const apellido = document.querySelector('#input-apellido').value.trim();
+    const telefono = document.querySelector('#input-telefono').value.trim();
+    if(nombre && apellido && telefono) {
+        agregarContacto(nombre, apellido, telefono);
+        e.target.reset();
+    }
+});
+
+document.querySelector('#flexCheckDefault').addEventListener('change', mostrarListado);
+</script>
+</body>
+</html>
